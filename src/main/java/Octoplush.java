@@ -5,8 +5,8 @@ public class Octoplush {
     private static final String IND = "     ";
 
     // --- Level-5: custom exception type(s) ---
-    private static class DukeException extends RuntimeException {
-        DukeException(String message) { super(message); }
+    private static class OctoplushException extends RuntimeException {
+        OctoplushException(String message) { super(message); }
     }
 
     private static abstract class Task {
@@ -91,10 +91,15 @@ public class Octoplush {
             try {
                 if (line.equals("list")) {
                     System.out.println(SEP);
-                    System.out.println(IND + "Here are the tasks in your list:");
-                    for (int i = 0; i < count; i++) {
-                        // NOTE: no space after the dot, to match sample output
-                        System.out.println(IND + (i + 1) + "." + tasks[i]);
+                    if (count == 0) {
+                        System.out.println(IND + "Your list is empty. Add tasks with: todo, deadline, or event.");
+                    } else {
+                        System.out.println(IND + "Here are the tasks in your list:");
+
+                        for (int i = 0; i < count; i++) {
+                            // NOTE: no space after the dot, to match sample output
+                            System.out.println(IND + (i + 1) + "." + tasks[i]);
+                        }
                     }
                     System.out.println(SEP);
 
@@ -117,7 +122,7 @@ public class Octoplush {
                 } else if (line.startsWith("todo")) {
                     // Allow "todo" and "todo ..." — but empty description is an error
                     String desc = (line.length() >= 4 ? line.substring(4) : "").trim();
-                    requireNonEmpty(desc, "The description of a todo cannot be empty.");
+                    requireNonEmpty(desc, "The description of a todo cannot be empty. Try: todo buy milk");
                     ensureCapacity(count, tasks.length);
                     tasks[count++] = new Todo(desc);
                     printAdded(tasks[count - 1], count);
@@ -127,7 +132,7 @@ public class Octoplush {
                     String rest = (line.length() >= 8 ? line.substring(8) : "").trim();
                     int byIdx = rest.indexOf("/by ");
                     if (byIdx < 0) {
-                        throw new DukeException("Invalid deadline format. Use: deadline <desc> /by <when>");
+                        throw new OctoplushException("Invalid deadline format. Use: deadline <desc> /by <when>");
                     }
                     String desc = rest.substring(0, byIdx).trim();
                     String by = rest.substring(byIdx + 4).trim();
@@ -143,7 +148,7 @@ public class Octoplush {
                     int fromIdx = rest.indexOf("/from ");
                     int toIdx = rest.indexOf("/to ");
                     if (fromIdx < 0 || toIdx < 0 || toIdx <= fromIdx) {
-                        throw new DukeException(
+                        throw new OctoplushException(
                                 "Invalid event format. Use: event <desc> /from <start> /to <end>"
                         );
                     }
@@ -159,10 +164,10 @@ public class Octoplush {
 
                 } else {
                     // Level-5: unknown command -> error block (no silent fallback)
-                    throw new DukeException("Sorry, I don’t recognise that command. Try: list, todo, deadline, event, mark, unmark, bye.");
+                    throw new OctoplushException("Sorry, I don’t recognise that command. Try: list, todo, deadline, event, mark, unmark, bye.");
                 }
 
-            } catch (DukeException ex) {
+            } catch (OctoplushException ex) {
                 printError(ex.getMessage());
             }
         }
@@ -184,33 +189,33 @@ public class Octoplush {
         System.out.println(SEP);
     }
 
-    // --- helpers that THROW DukeException with specific messages ---
+    // --- helpers that THROW OctoplushException with specific messages ---
 
     private static void requireNonEmpty(String s, String messageIfEmpty) {
         if (s == null || s.isEmpty()) {
-            throw new DukeException(messageIfEmpty);
+            throw new OctoplushException(messageIfEmpty);
         }
     }
 
     private static void ensureCapacity(int count, int capacity) {
         if (count >= capacity) {
-            throw new DukeException("Your task list is full. Please remove some tasks before adding more.");
+            throw new OctoplushException("Your task list is full. Please remove some tasks before adding more.");
         }
     }
 
     private static int parseIndexOrThrow(String s, int currentCount, String cmdName) {
         String trimmed = (s == null ? "" : s.trim());
         if (trimmed.isEmpty()) {
-            throw new DukeException("You must specify a task number to " + cmdName + ".");
+            throw new OctoplushException("You must specify a task number to " + cmdName + ".");
         }
         try {
             int idx = Integer.parseInt(trimmed);
             if (idx < 1 || idx > currentCount) {
-                throw new DukeException("Invalid task number: " + trimmed + ". It should be between 1 and " + currentCount + ".");
+                throw new OctoplushException("Invalid task number: " + trimmed + ". It should be between 1 and " + currentCount + ".");
             }
             return idx;
         } catch (NumberFormatException e) {
-            throw new DukeException("Task number must be an integer for '" + cmdName + "'.");
+            throw new OctoplushException("Task number must be an integer for '" + cmdName + "'.");
         }
     }
 }
