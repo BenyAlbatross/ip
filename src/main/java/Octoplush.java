@@ -162,6 +162,22 @@ public class Octoplush {
                     tasks[count++] = new Event(desc, from, to);
                     printAdded(tasks[count - 1], count);
 
+                } else if (line.startsWith("delete ")) {
+                    int idx = parseIndexOrThrow(line.substring(7), count, "delete");
+                    // Keep a copy for printing
+                    Task removed = tasks[idx - 1];
+                    // Shift left to fill the gap
+                    for (int i = idx; i < count; i++) {
+                        tasks[i - 1] = tasks[i];
+                    }
+                    tasks[count - 1] = null;
+                    count--;
+
+                    System.out.println(SEP);
+                    System.out.println(IND + "Noted. I've removed this task:");
+                    System.out.println(IND + "  " + removed);
+                    System.out.println(IND + "Now you have " + count + " items in the list.");
+                    System.out.println(SEP);
                 } else {
                     // Level-5: unknown command -> error block (no silent fallback)
                     throw new OctoplushException("Sorry, I don’t recognise that command. Try: list, todo, deadline, event, mark, unmark, bye.");
