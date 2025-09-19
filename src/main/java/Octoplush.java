@@ -1,10 +1,23 @@
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Octoplush {
     private static final String SEP = "    ____________________________________________________________";
     private static final String IND = "     ";
 
-    // --- Level-5: custom exception type(s) ---
+    // For persistent saving
+    private static final Path DATA_DIR = Paths.get("data"); // OS-independent relative path
+    private static final Path DATA_FILE = DATA_DIR.resolve("octoplush.txt");
+
+    // Custom exception type(s)
     private static class OctoplushException extends RuntimeException {
         OctoplushException(String message) { super(message); }
     }
@@ -63,6 +76,7 @@ public class Octoplush {
 
         Task[] tasks = new Task[100];
         int count = 0;
+        count = load(tasks);
 
         // Greeting
         System.out.println(SEP);
@@ -110,6 +124,7 @@ public class Octoplush {
                     System.out.println(IND + "Nice! I've marked this task as done:");
                     System.out.println(IND + "  " + tasks[idx - 1]);
                     System.out.println(SEP);
+                    save(tasks, count);
 
                 } else if (line.startsWith("unmark ")) {
                     int idx = parseIndexOrThrow(line.substring(7), count, "unmark");
@@ -118,6 +133,7 @@ public class Octoplush {
                     System.out.println(IND + "OK, I've marked this task as not done yet:");
                     System.out.println(IND + "  " + tasks[idx - 1]);
                     System.out.println(SEP);
+                    save(tasks, count);
 
                 } else if (line.startsWith("todo")) {
                     // Allow "todo" and "todo ..." — but empty description is an error
@@ -126,6 +142,7 @@ public class Octoplush {
                     ensureCapacity(count, tasks.length);
                     tasks[count++] = new Todo(desc);
                     printAdded(tasks[count - 1], count);
+                    save(tasks, count);
 
                 } else if (line.startsWith("deadline")) {
                     // Format: deadline <desc> /by <when>
@@ -141,6 +158,7 @@ public class Octoplush {
                     ensureCapacity(count, tasks.length);
                     tasks[count++] = new Deadline(desc, by);
                     printAdded(tasks[count - 1], count);
+                    save(tasks, count);
 
                 } else if (line.startsWith("event")) {
                     // Format: event <desc> /from <start> /to <end>
@@ -161,6 +179,7 @@ public class Octoplush {
                     ensureCapacity(count, tasks.length);
                     tasks[count++] = new Event(desc, from, to);
                     printAdded(tasks[count - 1], count);
+                    save(tasks, count);
 
                 } else if (line.startsWith("delete ")) {
                     int idx = parseIndexOrThrow(line.substring(7), count, "delete");
@@ -205,7 +224,7 @@ public class Octoplush {
         System.out.println(SEP);
     }
 
-    // --- helpers that THROW OctoplushException with specific messages ---
+    // Helpers that THROW OctoplushException with specific messages
 
     private static void requireNonEmpty(String s, String messageIfEmpty) {
         if (s == null || s.isEmpty()) {
@@ -233,5 +252,86 @@ public class Octoplush {
         } catch (NumberFormatException e) {
             throw new OctoplushException("Task number must be an integer for '" + cmdName + "'.");
         }
+    }
+
+    // --- Methods for saving ---
+    // Save entire task list to disk
+    private static void save(Task[] tasks, int count) {
+        try {
+            Files.createDirectories(DATA_DIR);
+            try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(DATA_FILE.toFile())))) {
+                for (int i = 0; i < count; i++) {
+                    Task t = tasks[i];
+                    char tag = t.tag();
+                    String doneFlag = t.done ? "1" : "0";
+                    if (t instanceof Todo) {
+                        // T|done|description
+                        pw.println(tag + " | " + doneFlag + " | " + t.description);
+                    } else if (t instanceof Deadline) {
+                        Deadline d = (Deadline) t; // outer class can access private members
+                        // D|done|description|by
+                        pw.println(tag + " | " + doneFlag + " | " + d.description + " | " + d.by);
+                    } else if (t instanceof Event) {
+                        Event e = (Event) t;
+                        // E|done|description|from|to
+                        pw.println(tag + " | " + doneFlag + " | " + e.description + " | " + e.from + " | " + e.to);
+                    }
+                }
+            }
+        } catch (IOException ioe) {
+            printError("Could not save tasks: " + ioe.getMessage());
+        }
+    }
+
+    // Load tasks from disk into the given array; return new count
+    private static int load(Task[] tasks) {
+        if (!Files.exists(DATA_FILE)) return 0; // first run: nothing to load
+        int n = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(DATA_FILE.toFile()))) {
+            String line;
+            while ((line = br.readLine()) != null && n < tasks.length) {
+                // Expect formats:
+                // T | 1 | read book
+                // D | 0 | return book | June 6th
+                // E | 0 | project meeting | Aug 6th 2pm | 4pm
+                String[] parts = line.split("\\|");
+                // trim all parts
+                for (int i = 0; i < parts.length; i++) parts[i] = parts[i].trim();
+                if (parts.length < 3) {
+                    // Corrupted line — skip it (stretch goal handling)
+                    continue;
+                }
+                char tag = parts[0].isEmpty() ? '?' : parts[0].charAt(0);
+                boolean done = "1".equals(parts[1]);
+                String desc = parts[2];
+
+                Task t = null;
+                switch (tag) {
+                case 'T':
+                    t = new Todo(desc);
+                    break;
+                case 'D':
+                    if (parts.length >= 4) {
+                        t = new Deadline(desc, parts[3]);
+                    }
+                    break;
+                case 'E':
+                    if (parts.length >= 5) {
+                        t = new Event(desc, parts[3], parts[4]);
+                    }
+                    break;
+                default:
+                    // Unknown type — skip line
+                }
+                if (t != null) {
+                    if (done) t.mark();
+                    tasks[n++] = t;
+                }
+            }
+        } catch (IOException ioe) {
+            printError("Could not load tasks: " + ioe.getMessage());
+            return 0;
+        }
+        return n;
     }
 }
