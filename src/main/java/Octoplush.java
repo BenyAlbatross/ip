@@ -84,6 +84,7 @@ public class Octoplush {
         System.out.println(IND + "What can I do for you?");
         System.out.println(SEP);
 
+        // Main loop runs to receive input
         while (true) {
             String line = sc.nextLine().trim();
 
