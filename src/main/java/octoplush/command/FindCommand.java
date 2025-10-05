@@ -25,10 +25,11 @@ public class FindCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         ArrayList<Task> matchingTasks = new ArrayList<>();
+        String lowerKeyword = keyword.toLowerCase();
 
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);
-            if (task.getDescription().contains(keyword)) {
+            if (task.getDescription().toLowerCase().contains(lowerKeyword)) {
                 matchingTasks.add(task);
             }
         }
