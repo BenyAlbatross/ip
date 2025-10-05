@@ -2,6 +2,10 @@
 
 Octoplush is a simple command-line task manager that helps you keep track of your todos, deadlines, and events. It saves your tasks automatically so you never lose track of what needs to be done.
 
+*Inspired by the invertible octopus plushie.*
+
+<img src="TheOctoplush.jpeg" width="300">
+
 ## Quick Start
 
 1. Ensure you have Java 17 or above installed on your computer.
@@ -29,8 +33,8 @@ list
     ____________________________________________________________
      Here are the tasks in your list:
      1.[T][ ] bake cake
-     2.[D][X] bake cake (by: June 6th)
-     3.[E][ ] CS2113 project meeting (from: Mon 2pm to: 4pm)
+     2.[D][X] bake cake (by: Dec 25 2025, 6:00pm)
+     3.[E][ ] CS2113 project meeting (from: Dec 20 2025, 2:00pm to: Dec 20 2025, 4:00pm)
     ____________________________________________________________
 ```
 
@@ -64,16 +68,21 @@ Adds a task with a deadline to your list.
 
 **Format:** `deadline DESCRIPTION /by DEADLINE`
 
+- `DEADLINE` can be in the following formats:
+  - `yyyy-MM-dd HHmm` (e.g., `2025-12-25 1800`)
+  - `yyyy-MM-dd` (defaults to 11:59pm, e.g., `2025-12-25`)
+  - `MM-dd` (assumes current year, defaults to 11:59pm, e.g., `12-25`)
+
 **Example:**
 ```
-deadline bake cake /by Oct 5th
+deadline bake cake /by 2025-12-25 1800
 ```
 
 **Expected output:**
 ```
     ____________________________________________________________
      Got it. I've added this task:
-       [D][ ] bake cake (by: Oct 5th)
+       [D][ ] bake cake (by: Dec 25 2025, 6:00pm)
      Now you have 2 tasks in the list.
     ____________________________________________________________
 ```
@@ -86,16 +95,21 @@ Adds an event with a start and end time to your list.
 
 **Format:** `event DESCRIPTION /from START /to END`
 
+- `START` and `END` can be in the following formats:
+  - `yyyy-MM-dd HHmm` (e.g., `2025-12-20 1400`)
+  - `yyyy-MM-dd` (defaults to 11:59pm, e.g., `2025-12-20`)
+  - `MM-dd` (assumes current year, defaults to 11:59pm, e.g., `12-20`)
+
 **Example:**
 ```
-event CS2113 project meeting /from Mon 12pm /to 2pm
+event CS2113 project meeting /from 2025-12-20 1400 /to 2025-12-20 1600
 ```
 
 **Expected output:**
 ```
     ____________________________________________________________
      Got it. I've added this task:
-       [E][ ] CS2113 project meeting (from: Mon 2pm to: 4pm)
+       [E][ ] CS2113 project meeting (from: Dec 20 2025, 2:00pm to: Dec 20 2025, 4:00pm)
      Now you have 3 tasks in the list.
     ____________________________________________________________
 ```
@@ -119,7 +133,7 @@ mark 2
 ```
     ____________________________________________________________
      Nice! I've marked this task as done:
-       [D][X] bake cake (by: Oct 5th)
+       [D][X] bake cake (by: Dec 25 2025, 6:00pm)
     ____________________________________________________________
 ```
 
@@ -142,7 +156,7 @@ unmark 2
 ```
     ____________________________________________________________
      OK, I've marked this task as not done yet:
-       [D][ ] bake cake (by: Oct 5th)
+       [D][ ] bake cake (by: Dec 25 2025, 6:00pm)
     ____________________________________________________________
 ```
 
@@ -164,7 +178,7 @@ find cake
     ____________________________________________________________
      Here are the matching tasks in your list:
      1.[T][ ] bake cake
-     2.[D][X] bake cake (by: June 6th)
+     2.[D][X] bake cake (by: Dec 25 2025, 6:00pm)
     ____________________________________________________________
 ```
 
@@ -187,7 +201,7 @@ delete 3
 ```
     ____________________________________________________________
      Noted. I've removed this task:
-       [E][ ] CS2113v project meeting (from: Mon 2pm to: 4pm)
+       [E][ ] CS2113 project meeting (from: Dec 20 2025, 2:00pm to: Dec 20 2025, 4:00pm)
      Now you have 2 items in the list.
     ____________________________________________________________
 ```
@@ -228,8 +242,13 @@ A: Octoplush will show an error message with suggestions on the correct format.
 **Q: Do I need to manually save my tasks?**
 A: No, tasks are automatically saved after every add, delete, mark, or unmark operation.
 
-**Q: Can I use dates for deadlines and events?**
-A: Currently, deadlines and event times are stored as plain text, so you can use any format you prefer (e.g., "2024-12-31", "tomorrow 3pm", "next Monday").
+**Q: What date formats are supported?**
+A: Octoplush supports flexible date input formats:
+- Full format: `yyyy-MM-dd HHmm` (e.g., `2025-12-25 1800`)
+- Date only: `yyyy-MM-dd` (defaults to 11:59pm, e.g., `2025-12-25`)
+- Short format: `MM-dd` (assumes current year, defaults to 11:59pm, e.g., `12-25`)
+
+Dates are displayed in a friendly format like "Dec 25 2025, 6:00pm".
 
 ---
 
@@ -239,8 +258,8 @@ A: Currently, deadlines and event times are stored as plain text, so you can use
 |---------|--------|---------|
 | List | `list` | `list` |
 | Todo | `todo DESCRIPTION` | `todo read book` |
-| Deadline | `deadline DESCRIPTION /by DEADLINE` | `deadline return book /by Sunday` |
-| Event | `event DESCRIPTION /from START /to END` | `event meeting /from 2pm /to 4pm` |
+| Deadline | `deadline DESCRIPTION /by DEADLINE` | `deadline return book /by 2025-12-25 1800` |
+| Event | `event DESCRIPTION /from START /to END` | `event meeting /from 2025-12-20 1400 /to 2025-12-20 1600` |
 | Mark | `mark INDEX` | `mark 1` |
 | Unmark | `unmark INDEX` | `unmark 1` |
 | Find | `find KEYWORD` | `find book` |
