@@ -1,4 +1,2 @@
-T | 1 | read
-D | 0 | return | June 6th
-E | 0 | camp | Fri 6pm | Sun 10am
-T | 0 | read
+D | 0 | AAAI | Monday 6pm
+E | 0 | Cup Party | Thursday 5pm | Sunday 6pm
