@@ -14,6 +14,8 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -21,6 +23,7 @@ import java.util.ArrayList;
  */
 public class Storage {
     private final Path filePath;
+    private static final DateTimeFormatter STORAGE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
     /**
      * Creates a new Storage instance with the specified file path.
@@ -82,12 +85,15 @@ public class Storage {
             break;
         case 'D':
             if (parts.length >= 4) {
-                task = new Deadline(desc, parts[3]);
+                LocalDateTime by = LocalDateTime.parse(parts[3], STORAGE_FORMAT);
+                task = new Deadline(desc, by);
             }
             break;
         case 'E':
             if (parts.length >= 5) {
-                task = new Event(desc, parts[3], parts[4]);
+                LocalDateTime from = LocalDateTime.parse(parts[3], STORAGE_FORMAT);
+                LocalDateTime to = LocalDateTime.parse(parts[4], STORAGE_FORMAT);
+                task = new Event(desc, from, to);
             }
             break;
         default:
@@ -127,9 +133,9 @@ public class Storage {
         if (task instanceof Todo) {
             return tag + " | " + doneFlag + " | " + task.getDescription();
         } else if (task instanceof Deadline d) {
-            return tag + " | " + doneFlag + " | " + d.getDescription() + " | " + d.getBy();
+            return tag + " | " + doneFlag + " | " + d.getDescription() + " | " + d.getByString();
         } else if (task instanceof Event e) {
-            return tag + " | " + doneFlag + " | " + e.getDescription() + " | " + e.getFrom() + " | " + e.getTo();
+            return tag + " | " + doneFlag + " | " + e.getDescription() + " | " + e.getFromString() + " | " + e.getToString();
         }
 
         return "";
