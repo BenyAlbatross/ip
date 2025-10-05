@@ -1,11 +1,16 @@
 package octoplush.task;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Represents an event, which is a task that occurs during a specific time period.
  */
 public class Event extends Task {
-    private final String from;
-    private final String to;
+    private final LocalDateTime from;
+    private final LocalDateTime to;
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma");
 
     /**
      * Creates a new event task.
@@ -14,7 +19,7 @@ public class Event extends Task {
      * @param from The start time of the event.
      * @param to The end time of the event.
      */
-    public Event(String description, String from, String to) {
+    public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
         this.from = from;
         this.to = to;
@@ -23,19 +28,37 @@ public class Event extends Task {
     /**
      * Gets the start time of this event.
      *
-     * @return The start time string.
+     * @return The start time LocalDateTime.
      */
-    public String getFrom() {
+    public LocalDateTime getFrom() {
         return from;
     }
 
     /**
      * Gets the end time of this event.
      *
-     * @return The end time string.
+     * @return The end time LocalDateTime.
      */
-    public String getTo() {
+    public LocalDateTime getTo() {
         return to;
+    }
+
+    /**
+     * Gets the start time as a formatted string for storage.
+     *
+     * @return The start time in yyyy-MM-dd HHmm format.
+     */
+    public String getFromString() {
+        return from.format(INPUT_FORMAT);
+    }
+
+    /**
+     * Gets the end time as a formatted string for storage.
+     *
+     * @return The end time in yyyy-MM-dd HHmm format.
+     */
+    public String getToString() {
+        return to.format(INPUT_FORMAT);
     }
 
     @Override
@@ -45,6 +68,6 @@ public class Event extends Task {
 
     @Override
     protected String extra() {
-        return " (from: " + from + " to: " + to + ")";
+        return " (from: " + from.format(OUTPUT_FORMAT) + " to: " + to.format(OUTPUT_FORMAT) + ")";
     }
 }

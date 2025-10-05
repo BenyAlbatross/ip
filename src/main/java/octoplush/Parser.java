@@ -12,10 +12,15 @@ import octoplush.task.Deadline;
 import octoplush.task.Todo;
 import octoplush.task.Event;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  * Parses user input into executable commands.
  */
 public class Parser {
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
     /**
      * Parses a user command string and returns the corresponding Command object.
@@ -73,7 +78,8 @@ public class Parser {
         requireNonEmpty(desc, "The description of a deadline cannot be empty.");
         requireNonEmpty(by, "The '/by' time for a deadline cannot be empty.");
 
-        return new AddCommand(new Deadline(desc, by));
+        LocalDateTime byDate = parseDateTime(by);
+        return new AddCommand(new Deadline(desc, byDate));
     }
 
     private static Command parseEventCommand(String command) throws OctoplushException {
@@ -93,7 +99,9 @@ public class Parser {
         requireNonEmpty(from, "The '/from' time for an event cannot be empty.");
         requireNonEmpty(to, "The '/to' time for an event cannot be empty.");
 
-        return new AddCommand(new Event(desc, from, to));
+        LocalDateTime fromDate = parseDateTime(from);
+        LocalDateTime toDate = parseDateTime(to);
+        return new AddCommand(new Event(desc, fromDate, toDate));
     }
 
     private static int parseTaskIndex(String indexStr, String cmdName) throws OctoplushException {
@@ -111,6 +119,39 @@ public class Parser {
             return idx - 1; // Convert to 0-based index
         } catch (NumberFormatException e) {
             throw new OctoplushException("Task number must be an integer for '" + cmdName + "'.");
+        }
+    }
+
+    /**
+     * Parses a date/time string with flexible formats.
+     * Accepts: yyyy-MM-dd HHmm, yyyy-MM-dd, or MM-dd (assumes current year and defaults time to 23:59).
+     *
+     * @param dateTimeStr The date/time string to parse.
+     * @return The parsed LocalDateTime.
+     * @throws OctoplushException If the format is invalid.
+     */
+    private static LocalDateTime parseDateTime(String dateTimeStr) throws OctoplushException {
+        try {
+            // Try full format: yyyy-MM-dd HHmm
+            return LocalDateTime.parse(dateTimeStr, INPUT_FORMAT);
+        } catch (DateTimeParseException e1) {
+            try {
+                // Try date only: yyyy-MM-dd (default to 23:59)
+                DateTimeFormatter dateOnly = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                return LocalDateTime.parse(dateTimeStr + " 2359", INPUT_FORMAT);
+            } catch (DateTimeParseException e2) {
+                try {
+                    // Try MM-dd (assume current year, default to 23:59)
+                    int currentYear = LocalDateTime.now().getYear();
+                    String fullDate = currentYear + "-" + dateTimeStr;
+                    return LocalDateTime.parse(fullDate + " 2359", INPUT_FORMAT);
+                } catch (DateTimeParseException e3) {
+                    throw new OctoplushException(
+                        "Invalid date format. Use: yyyy-MM-dd HHmm, yyyy-MM-dd, or MM-dd\n" +
+                        "Examples: 2024-12-25 1800, 2024-12-25, or 12-25"
+                    );
+                }
+            }
         }
     }
 
