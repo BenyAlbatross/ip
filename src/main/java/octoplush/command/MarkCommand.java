@@ -5,6 +5,9 @@ import octoplush.TaskList;
 import octoplush.Ui;
 import octoplush.OctoplushException;
 
+/**
+ * Command to mark a task as done.
+ */
 public class MarkCommand extends Command {
     private final int index;
 

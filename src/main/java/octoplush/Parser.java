@@ -12,8 +12,18 @@ import octoplush.task.Deadline;
 import octoplush.task.Todo;
 import octoplush.task.Event;
 
+/**
+ * Parses user input into executable commands.
+ */
 public class Parser {
 
+    /**
+     * Parses a user command string and returns the corresponding Command object.
+     *
+     * @param fullCommand The full command string entered by the user.
+     * @return The Command object representing the parsed command.
+     * @throws OctoplushException If the command is invalid or has incorrect format.
+     */
     public static Command parse(String fullCommand) throws OctoplushException {
         String trimmed = fullCommand.trim();
 

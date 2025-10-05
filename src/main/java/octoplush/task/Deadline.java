@@ -1,5 +1,8 @@
 package octoplush.task;
 
+/**
+ * Represents a task with a deadline.
+ */
 public class Deadline extends Task {
     private final String by;
 

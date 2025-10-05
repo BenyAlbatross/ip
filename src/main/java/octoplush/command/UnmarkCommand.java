@@ -5,6 +5,9 @@ import octoplush.TaskList;
 import octoplush.Ui;
 import octoplush.OctoplushException;
 
+/**
+ * Command to mark a task as not done.
+ */
 public class UnmarkCommand extends Command {
     private final int index;
 

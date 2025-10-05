@@ -6,6 +6,9 @@ import octoplush.Ui;
 import octoplush.OctoplushException;
 import octoplush.task.Task;
 
+/**
+ * Command to add a task to the task list.
+ */
 public class AddCommand extends Command {
     private final Task task;
 

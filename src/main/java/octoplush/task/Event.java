@@ -1,5 +1,8 @@
 package octoplush.task;
 
+/**
+ * Represents an event, which is a task that occurs during a specific time period.
+ */
 public class Event extends Task {
     private final String from;
     private final String to;

@@ -6,6 +6,9 @@ import octoplush.Ui;
 import octoplush.OctoplushException;
 import octoplush.task.Task;
 
+/**
+ * Command to delete a task from the task list.
+ */
 public class DeleteCommand extends Command {
     private final int index;
 

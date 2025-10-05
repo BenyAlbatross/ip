@@ -16,6 +16,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+/**
+ * Handles loading and saving tasks to a file.
+ */
 public class Storage {
     private final Path filePath;
 
@@ -23,6 +26,12 @@ public class Storage {
         this.filePath = Paths.get(filePath);
     }
 
+    /**
+     * Loads tasks from the storage file.
+     *
+     * @return ArrayList of tasks loaded from the file.
+     * @throws OctoplushException If there is an error reading the file.
+     */
     public ArrayList<Task> load() throws OctoplushException {
         ArrayList<Task> tasks = new ArrayList<>();
 
@@ -87,6 +96,12 @@ public class Storage {
         return task;
     }
 
+    /**
+     * Saves tasks to the storage file.
+     *
+     * @param tasks The list of tasks to save.
+     * @throws OctoplushException If there is an error writing to the file.
+     */
     public void save(ArrayList<Task> tasks) throws OctoplushException {
         try {
             Files.createDirectories(filePath.getParent());

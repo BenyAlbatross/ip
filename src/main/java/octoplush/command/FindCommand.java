@@ -7,6 +7,9 @@ import octoplush.task.Task;
 
 import java.util.ArrayList;
 
+/**
+ * Command to find tasks containing a keyword.
+ */
 public class FindCommand extends Command {
     private final String keyword;
 

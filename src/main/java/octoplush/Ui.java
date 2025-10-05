@@ -5,6 +5,9 @@ import octoplush.task.Task;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Handles user interaction through the command line interface.
+ */
 public class Ui {
     private static final String SEP = "    ____________________________________________________________";
     private static final String IND = "     ";
@@ -14,6 +17,9 @@ public class Ui {
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * Displays the welcome message to the user.
+     */
     public void showWelcome() {
         showLine();
         System.out.println(IND + "Hello! I'm Octoplush");
@@ -21,18 +27,34 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Displays a separator line.
+     */
     public void showLine() {
         System.out.println(SEP);
     }
 
+    /**
+     * Displays an error message to the user.
+     *
+     * @param message The error message to display.
+     */
     public void showError(String message) {
         System.out.println(IND + message);
     }
 
+    /**
+     * Displays an error message when tasks cannot be loaded from file.
+     */
     public void showLoadingError() {
         showError("Could not load tasks from file. Starting with an empty task list.");
     }
 
+    /**
+     * Reads a command from the user.
+     *
+     * @return The user's input command.
+     */
     public String readCommand() {
         String line = scanner.nextLine().trim();
         if (line.isEmpty()) {
