@@ -125,6 +125,7 @@ public class Parser {
     /**
      * Parses a date/time string with flexible formats.
      * Accepts: yyyy-MM-dd HHmm, yyyy-MM-dd, or MM-dd (assumes current year and defaults time to 23:59).
+     * For MM-dd format, if the date has already passed this year, assumes next year.
      *
      * @param dateTimeStr The date/time string to parse.
      * @return The parsed LocalDateTime.
@@ -142,9 +143,18 @@ public class Parser {
             } catch (DateTimeParseException e2) {
                 try {
                     // Try MM-dd (assume current year, default to 23:59)
-                    int currentYear = LocalDateTime.now().getYear();
+                    LocalDateTime now = LocalDateTime.now();
+                    int currentYear = now.getYear();
                     String fullDate = currentYear + "-" + dateTimeStr;
-                    return LocalDateTime.parse(fullDate + " 2359", INPUT_FORMAT);
+                    LocalDateTime parsed = LocalDateTime.parse(fullDate + " 2359", INPUT_FORMAT);
+
+                    // If the date is in the past (compare dates only), use next year instead
+                    if (parsed.toLocalDate().isBefore(now.toLocalDate())) {
+                        fullDate = (currentYear + 1) + "-" + dateTimeStr;
+                        parsed = LocalDateTime.parse(fullDate + " 2359", INPUT_FORMAT);
+                    }
+
+                    return parsed;
                 } catch (DateTimeParseException e3) {
                     throw new OctoplushException(
                         "Invalid date format. Use: yyyy-MM-dd HHmm, yyyy-MM-dd, or MM-dd\n" +

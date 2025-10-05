@@ -4,7 +4,7 @@ Octoplush is a simple command-line task manager that helps you keep track of you
 
 *Inspired by the invertible octopus plushie.*
 
-<img src="TheOctoplush.jpeg" width="300">
+<img src="TheOctoplush.jpeg" width="300" alt="Image of an invertible octopus plush toy">
 
 ## Table of Contents
 - [Quick Start](#quick-start)
@@ -272,14 +272,14 @@ Dates are displayed in a friendly format like "Dec 25 2025, 6:00pm".
 
 ## Command Summary
 
-| Command | Format | Example |
-|---------|--------|---------|
-| List | `list` | `list` |
-| Todo | `todo DESCRIPTION` | `todo read book` |
-| Deadline | `deadline DESCRIPTION /by DEADLINE` | `deadline return book /by 2025-12-25 1800` |
-| Event | `event DESCRIPTION /from START /to END` | `event meeting /from 2025-12-20 1400 /to 2025-12-20 1600` |
-| Mark | `mark INDEX` | `mark 1` |
-| Unmark | `unmark INDEX` | `unmark 1` |
-| Find | `find KEYWORD` | `find book` |
-| Delete | `delete INDEX` | `delete 2` |
-| Exit | `bye` | `bye` |
+| Command  | Format                                  | Example                                                   |
+|----------|-----------------------------------------|-----------------------------------------------------------|
+| List     | `list`                                  | `list`                                                    |
+| Todo     | `todo DESCRIPTION`                      | `todo read book`                                          |
+| Deadline | `deadline DESCRIPTION /by DEADLINE`     | `deadline return book /by 2025-12-25 1800`                |
+| Event    | `event DESCRIPTION /from START /to END` | `event meeting /from 2025-12-20 1400 /to 2025-12-20 1600` |
+| Mark     | `mark INDEX`                            | `mark 1`                                                  |
+| Unmark   | `unmark INDEX`                          | `unmark 1`                                                |
+| Find     | `find KEYWORD`                          | `find book`                                               |
+| Delete   | `delete INDEX`                          | `delete 2`                                                |
+| Exit     | `bye`                                   | `bye`                                                     |
