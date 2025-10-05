@@ -4,6 +4,7 @@ import octoplush.command.Command;
 import octoplush.command.AddCommand;
 import octoplush.command.DeleteCommand;
 import octoplush.command.ExitCommand;
+import octoplush.command.FindCommand;
 import octoplush.command.ListCommand;
 import octoplush.command.MarkCommand;
 import octoplush.command.UnmarkCommand;
@@ -29,6 +30,10 @@ public class Parser {
         } else if (trimmed.startsWith("delete ")) {
             int index = parseTaskIndex(trimmed.substring(7), "delete");
             return new DeleteCommand(index);
+        } else if (trimmed.startsWith("find ")) {
+            String keyword = trimmed.substring(5).trim();
+            requireNonEmpty(keyword, "The search keyword cannot be empty. Try: find book");
+            return new FindCommand(keyword);
         } else if (trimmed.startsWith("todo")) {
             String desc = trimmed.substring(4).trim();
             requireNonEmpty(desc, "The description of a todo cannot be empty. Try: todo buy milk");
@@ -38,7 +43,7 @@ public class Parser {
         } else if (trimmed.startsWith("event")) {
             return parseEventCommand(trimmed);
         } else {
-            throw new OctoplushException("Sorry, I don't recognise that command. Try: list, todo, deadline, event, mark, unmark, bye.");
+            throw new OctoplushException("Sorry, I don't recognise that command. Try: list, find, todo, deadline, event, mark, unmark, bye.");
         }
     }
 

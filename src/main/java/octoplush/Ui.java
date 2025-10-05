@@ -2,6 +2,7 @@ package octoplush;
 
 import octoplush.task.Task;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ui {
@@ -70,6 +71,17 @@ public class Ui {
             System.out.println(IND + "Here are the tasks in your list:");
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println(IND + (i + 1) + "." + tasks.get(i));
+            }
+        }
+    }
+
+    public void showFoundTasks(ArrayList<Task> matchingTasks) {
+        if (matchingTasks.isEmpty()) {
+            System.out.println(IND + "No matching tasks found.");
+        } else {
+            System.out.println(IND + "Here are the matching tasks in your list:");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                System.out.println(IND + (i + 1) + "." + matchingTasks.get(i));
             }
         }
     }
