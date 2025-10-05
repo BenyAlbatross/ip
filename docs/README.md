@@ -6,6 +6,21 @@ Octoplush is a simple command-line task manager that helps you keep track of you
 
 <img src="TheOctoplush.jpeg" width="300">
 
+## Table of Contents
+- [Quick Start](#quick-start)
+- [Features](#features)
+  - [Adding a todo: `todo`](#adding-a-todo-todo)
+  - [Adding a deadline: `deadline`](#adding-a-deadline-deadline)
+  - [Adding an event: `event`](#adding-an-event-event)
+  - [Listing all tasks: `list`](#viewing-all-tasks-list)
+  - [Marking tasks: `mark`](#marking-a-task-as-done-mark)
+  - [Unmarking tasks: `unmark`](#marking-a-task-as-not-done-unmark)
+  - [Deleting tasks: `delete`](#deleting-a-task-delete)
+  - [Finding tasks: `find`](#finding-tasks-find)
+  - [Exiting the program: `bye`](#exiting-the-program-bye)
+- [FAQ](#faq)
+- [Command Summary](#command-summary)
+
 ## Quick Start
 
 1. Ensure you have Java 17 or above installed on your computer.
