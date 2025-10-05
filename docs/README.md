@@ -245,25 +245,28 @@ bye
 
 ## FAQ
 
-**Q: Where are my tasks stored?**
-A: Tasks are automatically saved to `data/octoplush.txt` in the same directory as the jar file.
+**Q: Where are my tasks stored?**<br />
+**A:** Tasks are automatically saved to `data/octoplush.txt` in the same directory as the jar file.
 
-**Q: Can I edit the data file directly?**
-A: Yes, but be careful! The file uses a specific format (`TAG | DONE | DESCRIPTION | EXTRA`). Incorrect formatting may cause tasks to be skipped when loading.
+**Q: Can I edit the data file directly?**<br />
+**A:** Yes, but be careful! The file uses a specific format (`TAG | DONE | DESCRIPTION | EXTRA`). Incorrect formatting may cause tasks to be skipped when loading.
 
-**Q: What happens if I type a command incorrectly?**
-A: Octoplush will show an error message with suggestions on the correct format.
+**Q: What happens if I type a command incorrectly?**<br />
+**A:** Octoplush will show an error message with suggestions on the correct format.
 
-**Q: Do I need to manually save my tasks?**
-A: No, tasks are automatically saved after every add, delete, mark, or unmark operation.
+**Q: Do I need to manually save my tasks?**<br />
+**A:** No, tasks are automatically saved after every add, delete, mark, or unmark operation.
 
-**Q: What date formats are supported?**
-A: Octoplush supports flexible date input formats:
+**Q: What date formats are supported?**<br />
+**A:** Octoplush supports flexible date input formats:
 - Full format: `yyyy-MM-dd HHmm` (e.g., `2025-12-25 1800`)
 - Date only: `yyyy-MM-dd` (defaults to 11:59pm, e.g., `2025-12-25`)
 - Short format: `MM-dd` (assumes current year, defaults to 11:59pm, e.g., `12-25`)
 
 Dates are displayed in a friendly format like "Dec 25 2025, 6:00pm".
+
+**Q: What are the limitations of this tool?**<br />
+**A:** Octoplush does not check if event end times occur after start times.
 
 ---
 
