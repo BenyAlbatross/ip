@@ -11,6 +11,11 @@ import octoplush.OctoplushException;
 public class UnmarkCommand extends Command {
     private final int index;
 
+    /**
+     * Creates a command to mark a task as not done.
+     *
+     * @param index The 0-based index of the task to unmark.
+     */
     public UnmarkCommand(int index) {
         this.index = index;
     }

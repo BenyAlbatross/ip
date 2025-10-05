@@ -12,6 +12,11 @@ import octoplush.task.Task;
 public class DeleteCommand extends Command {
     private final int index;
 
+    /**
+     * Creates a command to delete a task at the specified index.
+     *
+     * @param index The 0-based index of the task to delete.
+     */
     public DeleteCommand(int index) {
         this.index = index;
     }

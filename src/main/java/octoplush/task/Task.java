@@ -8,6 +8,11 @@ public abstract class Task {
     protected final String description;
     protected boolean done;
 
+    /**
+     * Creates a new task with the given description.
+     *
+     * @param description The description of the task.
+     */
     public Task(String description) {
         this.description = description;
         this.done = false;
@@ -52,6 +57,12 @@ public abstract class Task {
      */
     public abstract char tag();
 
+    /**
+     * Returns extra information to display for this task type.
+     * Subclasses can override this to provide additional details (e.g., deadline time).
+     *
+     * @return Extra information string, or empty string if none.
+     */
     protected String extra() {
         return "";
     }

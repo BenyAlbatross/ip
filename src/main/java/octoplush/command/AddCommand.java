@@ -12,6 +12,11 @@ import octoplush.task.Task;
 public class AddCommand extends Command {
     private final Task task;
 
+    /**
+     * Creates a command to add a task.
+     *
+     * @param task The task to add.
+     */
     public AddCommand(Task task) {
         this.task = task;
     }
