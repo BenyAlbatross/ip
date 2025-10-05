@@ -31,26 +31,27 @@ public class Parser {
             return new ExitCommand();
         } else if (trimmed.equals("list")) {
             return new ListCommand();
-        } else if (trimmed.startsWith("mark ")) {
-            int index = parseTaskIndex(trimmed.substring(5), "mark");
+        } else if (trimmed.startsWith("mark ") || trimmed.equals("mark")) {
+            int index = parseTaskIndex(trimmed.length() > 4 ? trimmed.substring(5) : "", "mark");
             return new MarkCommand(index);
-        } else if (trimmed.startsWith("unmark ")) {
-            int index = parseTaskIndex(trimmed.substring(7), "unmark");
+        } else if (trimmed.startsWith("unmark ") || trimmed.equals("unmark")) {
+            int index = parseTaskIndex(trimmed.length() > 6 ? trimmed.substring(7) : "", "unmark");
             return new UnmarkCommand(index);
-        } else if (trimmed.startsWith("delete ")) {
-            int index = parseTaskIndex(trimmed.substring(7), "delete");
+        } else if (trimmed.startsWith("delete ") || trimmed.equals("delete")) {
+            int index = parseTaskIndex(trimmed.length() > 6 ? trimmed.substring(7) : "", "delete");
             return new DeleteCommand(index);
-        } else if (trimmed.startsWith("find ")) {
-            String keyword = trimmed.substring(5).trim();
+        } else if (trimmed.startsWith("find ") || trimmed.equals("find")) {
+            String keyword = trimmed.length() > 4 ? trimmed.substring(5).trim() : "";
             requireNonEmpty(keyword, "The search keyword cannot be empty. Try: find book");
             return new FindCommand(keyword);
-        } else if (trimmed.startsWith("todo")) {
-            String desc = trimmed.substring(4).trim();
+
+        } else if (trimmed.startsWith("todo ") || trimmed.equals("todo")) {
+            String desc = trimmed.length() > 4 ? trimmed.substring(5).trim() : "";
             requireNonEmpty(desc, "The description of a todo cannot be empty. Try: todo buy milk");
             return new AddCommand(new Todo(desc));
-        } else if (trimmed.startsWith("deadline")) {
+        } else if (trimmed.startsWith("deadline ") || trimmed.equals("deadline")) {
             return parseDeadlineCommand(trimmed);
-        } else if (trimmed.startsWith("event")) {
+        } else if (trimmed.startsWith("event ") || trimmed.equals("event")) {
             return parseEventCommand(trimmed);
         } else {
             throw new OctoplushException("Sorry, I don't recognise that command. Try: list, find, todo, deadline, event, mark, unmark, bye.");
