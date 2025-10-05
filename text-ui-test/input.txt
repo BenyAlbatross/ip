@@ -1,0 +1,16 @@
+todo bake cake
+todo read book
+list
+deadline return book /by Sunday
+event project meeting /from Mon 2pm /to 4pm
+list
+mark 1
+mark 2
+list
+unmark 1
+list
+find book
+find cake
+delete 3
+list
+bye

@@ -54,7 +54,8 @@ public class Parser {
         } else if (trimmed.startsWith("event ") || trimmed.equals("event")) {
             return parseEventCommand(trimmed);
         } else {
-            throw new OctoplushException("Sorry, I don't recognise that command. Try: list, find, todo, deadline, event, mark, unmark, bye.");
+            throw new OctoplushException("Sorry, I don't recognise that command. Try: list, find, todo, deadline, " +
+                    "event, mark, unmark, bye.");
         }
     }
 
