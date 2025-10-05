@@ -11,6 +11,11 @@ import octoplush.OctoplushException;
 public class MarkCommand extends Command {
     private final int index;
 
+    /**
+     * Creates a command to mark a task as done.
+     *
+     * @param index The 0-based index of the task to mark.
+     */
     public MarkCommand(int index) {
         this.index = index;
     }

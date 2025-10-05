@@ -10,10 +10,18 @@ import java.util.ArrayList;
 public class TaskList {
     private final ArrayList<Task> tasks;
 
+    /**
+     * Creates an empty task list.
+     */
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Creates a task list initialized with the given tasks.
+     *
+     * @param tasks The initial list of tasks.
+     */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
@@ -73,10 +81,22 @@ public class TaskList {
         return tasks;
     }
 
+    /**
+     * Marks the task at the specified index as done.
+     *
+     * @param index The 0-based index of the task to mark.
+     * @throws OctoplushException If the index is invalid.
+     */
     public void markTask(int index) {
         get(index).mark();
     }
 
+    /**
+     * Marks the task at the specified index as not done.
+     *
+     * @param index The 0-based index of the task to unmark.
+     * @throws OctoplushException If the index is invalid.
+     */
     public void unmarkTask(int index) {
         get(index).unmark();
     }

@@ -13,6 +13,11 @@ import java.util.ArrayList;
 public class FindCommand extends Command {
     private final String keyword;
 
+    /**
+     * Creates a command to find tasks containing a keyword.
+     *
+     * @param keyword The keyword to search for.
+     */
     public FindCommand(String keyword) {
         this.keyword = keyword;
     }

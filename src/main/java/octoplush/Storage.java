@@ -22,6 +22,11 @@ import java.util.ArrayList;
 public class Storage {
     private final Path filePath;
 
+    /**
+     * Creates a new Storage instance with the specified file path.
+     *
+     * @param filePath The path to the file for storing tasks.
+     */
     public Storage(String filePath) {
         this.filePath = Paths.get(filePath);
     }

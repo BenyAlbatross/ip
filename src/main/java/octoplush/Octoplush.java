@@ -13,6 +13,11 @@ public class Octoplush {
     private TaskList tasks;
     private final Ui ui;
 
+    /**
+     * Creates an Octoplush instance with the specified file path for task storage.
+     *
+     * @param filePath The path to the file where tasks will be stored.
+     */
     public Octoplush(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
